@@ -8,8 +8,8 @@ import { Container, spacing } from '@mui/system';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
-
 import Axios from "axios"
+import { Box } from '@mui/material';
 
 const darkTheme = createTheme({
   palette: {
@@ -22,14 +22,16 @@ function App() {
 
   const [pokemonName, setPokemonName] = useState("")
   const [pokemonChosen, setPokemonChosen] = useState(false)
+  const [pokemonSpec, setPokemonSpec] = useState({
+    description: "",
+    catchRate: ""
+  })
   const [pokemon, setPokemon] = useState({
     name: "",
     species: "",
     img: "",
     type: "",
     abilities: "",
-    description: "",
-    catchRate: ""
   })
   const searchPokemon = () => {
 
@@ -55,7 +57,7 @@ function App() {
 
     Axios.get(pokemonSpeciesUrl).then((response) => {
       console.log(response)
-      
+
       let description;
       response.data.flavor_text_entries.map(flavor => {
         if (flavor.language.name === "en") {
@@ -66,7 +68,7 @@ function App() {
 
       const catchRate = Math.round((100 / 255) * response.data['capture_rate']);
 
-      setPokemon({
+      setPokemonSpec({
         description: description,
         catchRate: catchRate
       })
@@ -84,23 +86,39 @@ function App() {
           <TextField id="outlined-basic" label="Search Pokemon" variant="outlined" onChange={(event) => setPokemonName(event.target.value.toLowerCase())} />
           <Button variant="contained" className="search-button" sx={{ mt: 2 }} onClick={searchPokemon}>Search</Button>
         </div>
-        <div>
-          <Container maxWidth="lg" sx={{ mt: 8 }}>
-            {!pokemonChosen ? <Typography variant="h4" display="flex" justifyContent="center">Please choose a pokemon</Typography> :
-              <Card variant="outlined">
-                <CardMedia
-                  sx={{ height: 140 }}
-                  image="/static/images/cards/contemplative-reptile.jpg"
-                  title="green iguana"
+
+        <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }} >
+          {!pokemonChosen ? <Typography variant="h4" display="flex" justifyContent="center" >Please choose a pokemon</Typography> :
+            <Container>
+
+              <Typography variant="h3" display="flex" justifyContent="center"
+                alignItems="center" sx={{ textTransform: 'capitalize' }}>{pokemon.species}</Typography>
+              <Box sx={{ m: 2, width: 600 }} display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <img
+                  src={pokemon.img}
                 />
-                <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000
-                  species, ranging across all continents except Antarctica
-                </Typography>
-              </Card>
-            }
-          </Container>
-        </div>
+                <Box display="flex" justifyContent="center" flexDirection="column">
+                  <Typography variant="body1" color="">
+                    <Typography sx={{ fontWeight: 'bold' }}>Description:</Typography>
+                    {pokemonSpec.description}
+                  </Typography>
+                  <Typography variant="body1" color="">
+                    <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
+                    {pokemon.abilities}
+                  </Typography>
+                  <Typography variant="body1" color="">
+                    <Typography sx={{ fontWeight: 'bold' }}>Type:</Typography>
+                    {pokemon.type}
+                  </Typography>
+                </Box>
+              </Box>
+
+            </Container>
+          }
+        </Container>
+
       </div>
     </ThemeProvider >
   );
