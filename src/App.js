@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { Container, spacing } from '@mui/system';
 import Typography from '@mui/material/Typography';
 import Axios from "axios"
-import { Box } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 
 const darkTheme = createTheme({
   palette: {
@@ -117,7 +117,7 @@ function App() {
                 {pokemon.species}
               </Typography>
 
-              <Box sx={{ m: 2, width: 600 }} display="flex"
+              <Box sx={{ width: 600 }} display="flex"
                 justifyContent="center"
                 alignItems="center">
                 <img
@@ -133,11 +133,14 @@ function App() {
                     {pokemon.abilities}
                   </Typography>
                   <Typography variant="body1" color="">
-                    <Typography sx={{ fontWeight: 'bold' }}>Type:</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }}>Typing:</Typography>
                     {pokemon.type.map((types) => (
-                      <Button key={types} sx={{ borderRadius: 6 }}>{types}</Button>
+                      <Chip label= {types} key={types} sx={{ mr:1, mt:1 ,borderRadius: 6, textTransform: 'capitalize', backgroundColor: `#${TYPE_COLORS_CODE[types]}`, color: 'white' }}
+                      />
+                      
+                     
                     ))}
-                    
+
                   </Typography>
 
                 </Box>
