@@ -5,9 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { Container, spacing } from '@mui/system';
-import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
-import CardMedia from '@mui/material/CardMedia';
 import Axios from "axios"
 import { Box } from '@mui/material';
 
@@ -17,6 +15,24 @@ const darkTheme = createTheme({
   },
 });
 
+const TYPE_COLORS_CODE = {
+  water: '3295F6',
+  fire: 'E73B0C',
+  grass: '74C236',
+  bug: '81C12E',
+  dragon: '755EDF',
+  electric: 'FCBC17',
+  fairy: 'F4B1F4',
+  flying: 'A3B3F7',
+  ghost: '6060B2',
+  ground: 'D3B357',
+  ice: 'A3E7FD',
+  normal: 'CBC4BC',
+  poison: '934594',
+  psychic: 'ED4882',
+  rock: '89A156',
+  steel: 'B5B5C3'
+}
 
 function App() {
 
@@ -30,9 +46,10 @@ function App() {
     name: "",
     species: "",
     img: "",
-    type: "",
-    abilities: "",
+    type: [],
+    abilities: [],
   })
+
   const searchPokemon = () => {
 
     const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
@@ -43,8 +60,11 @@ function App() {
       const abilities = response.data.abilities.map(ability => {
         return ability.ability.name.toLowerCase().split('-').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join('');
       })
+      console.log(abilities)
 
       const types = response.data.types.map(type => type.type.name)
+
+      console.log(types)
 
       setPokemon({
         name: pokemon,
@@ -88,11 +108,15 @@ function App() {
         </div>
 
         <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }} >
-          {!pokemonChosen ? <Typography variant="h4" display="flex" justifyContent="center" >Please choose a pokemon</Typography> :
+          {!pokemonChosen ? <Typography variant="h4" display="flex" justifyContent="center" >Please choose a Pokemon</Typography> :
             <Container>
 
               <Typography variant="h3" display="flex" justifyContent="center"
-                alignItems="center" sx={{ textTransform: 'capitalize' }}>{pokemon.species}</Typography>
+                alignItems="center"
+                sx={{ textTransform: 'capitalize' }}>
+                {pokemon.species}
+              </Typography>
+
               <Box sx={{ m: 2, width: 600 }} display="flex"
                 justifyContent="center"
                 alignItems="center">
@@ -110,8 +134,12 @@ function App() {
                   </Typography>
                   <Typography variant="body1" color="">
                     <Typography sx={{ fontWeight: 'bold' }}>Type:</Typography>
-                    {pokemon.type}
+                    {pokemon.type.map((types) => (
+                      <Button key={types} sx={{ borderRadius: 6 }}>{types}</Button>
+                    ))}
+                    
                   </Typography>
+
                 </Box>
               </Box>
 
