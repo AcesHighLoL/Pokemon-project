@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { Container, spacing } from '@mui/system';
 import Typography from '@mui/material/Typography';
 import Axios from "axios"
-import { Box, Chip } from '@mui/material';
+import { Box, Card, Chip, ImageList } from '@mui/material';
 
 const darkTheme = createTheme({
   palette: {
@@ -58,7 +58,7 @@ function App() {
     Axios.get(pokemonUrl).then((response) => {
       console.log(response)
       const abilities = response.data.abilities.map(ability => {
-        return ability.ability.name.toLowerCase().split('-').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join('');
+        return ability.ability.name.toLowerCase().split('-').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(" ");
       })
       console.log(abilities)
 
@@ -78,8 +78,8 @@ function App() {
     Axios.get(pokemonSpeciesUrl).then((response) => {
       console.log(response)
 
-      let description;
-      response.data.flavor_text_entries.map(flavor => {
+      let description = "";
+      response.data.flavor_text_entries.some(flavor => {
         if (flavor.language.name === "en") {
           description = flavor.flavor_text
           return;
@@ -107,45 +107,53 @@ function App() {
           <Button variant="contained" className="search-button" sx={{ mt: 2 }} onClick={searchPokemon}>Search</Button>
         </div>
 
-        <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }} >
+        <Container sx={{ mt: 3, mb: 3 }} >
           {!pokemonChosen ? <Typography variant="h4" display="flex" justifyContent="center" >Please choose a Pokemon</Typography> :
             <Container>
 
               <Typography variant="h3" display="flex" justifyContent="center"
                 alignItems="center"
-                sx={{ textTransform: 'capitalize' }}>
+                sx={{ textTransform: 'capitalize', mb: 1 }}>
                 {pokemon.species}
+                <Typography sx={{ ml: 3 }}>
+                  {pokemon.type.map((types) => (
+                    <Chip label={types} key={types} sx={{ mr: 1, mt: 1, borderRadius: 6, textTransform: 'capitalize', backgroundColor: `#${TYPE_COLORS_CODE[types]}`, color: 'white', width: 70 }}
+                    />
+                  ))}
+                </Typography>
               </Typography>
 
-              <Box sx={{ width: 600 }} display="flex"
-                justifyContent="center"
-                alignItems="center">
+
+              <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center">
                 <img
                   src={pokemon.img}
                 />
-                <Box display="flex" justifyContent="center" flexDirection="column">
+                <Box display="flex" justifyContent="center" flexDirection="column" sx={{ mb: 3 }}>
                   <Typography variant="body1" color="">
                     <Typography sx={{ fontWeight: 'bold' }}>Description:</Typography>
                     {pokemonSpec.description}
                   </Typography>
-                  <Typography variant="body1" color="">
-                    <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
-                    {pokemon.abilities}
-                  </Typography>
-                  <Typography variant="body1" color="">
-                    <Typography sx={{ fontWeight: 'bold' }}>Typing:</Typography>
-                    {pokemon.type.map((types) => (
-                      <Chip label= {types} key={types} sx={{ mr:1, mt:1 ,borderRadius: 6, textTransform: 'capitalize', backgroundColor: `#${TYPE_COLORS_CODE[types]}`, color: 'white' }}
-                      />
-                      
-                     
-                    ))}
-
-                  </Typography>
-
                 </Box>
-              </Box>
 
+                {/* </Box> */}
+              </Box>
+              <Card variant='outlined'>
+
+                <Typography variant="h5">Profile</Typography>
+                <Typography variant="body1" color="">
+                  <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
+                  {/* {pokemon.abilities.map((ability) => (
+                      <Typography>
+                      {ability}
+                      </Typography>
+                    ))} */}
+                  {pokemon.abilities}
+                </Typography>
+                <Typography variant="body1" color="">
+                  <Typography sx={{ fontWeight: 'bold' }}>Catch Rate:</Typography>
+                  {pokemonSpec.catchRate}%
+                </Typography>
+              </Card>
             </Container>
           }
         </Container>
