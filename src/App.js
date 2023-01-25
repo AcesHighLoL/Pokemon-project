@@ -139,7 +139,7 @@ function App() {
               </Box>
               <Card variant='outlined'>
 
-                <Typography variant="h5">Profile</Typography>
+                <Typography variant="h5" display="flex" justifyContent="center">Profile</Typography>
                 <Typography variant="body1" color="">
                   <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
                   {/* {pokemon.abilities.map((ability) => (
@@ -147,7 +147,7 @@ function App() {
                       {ability}
                       </Typography>
                     ))} */}
-                  {pokemon.abilities}
+                  {pokemon.abilities.join(", ")}
                 </Typography>
                 <Typography variant="body1" color="">
                   <Typography sx={{ fontWeight: 'bold' }}>Catch Rate:</Typography>
