@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { Container, spacing } from '@mui/system';
 import Typography from '@mui/material/Typography';
 import Axios from "axios"
-import { Box, Card, Chip, ImageList } from '@mui/material';
+import { Box, Card, Chip, Grid, ImageList } from '@mui/material';
 
 const darkTheme = createTheme({
   palette: {
@@ -60,11 +60,8 @@ function App() {
       const abilities = response.data.abilities.map(ability => {
         return ability.ability.name.toLowerCase().split('-').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(" ");
       })
-      console.log(abilities)
-
+      
       const types = response.data.types.map(type => type.type.name)
-
-      console.log(types)
 
       setPokemon({
         name: pokemon,
@@ -109,7 +106,7 @@ function App() {
 
         <Container sx={{ mt: 3, mb: 3 }} >
           {!pokemonChosen ? <Typography variant="h4" display="flex" justifyContent="center" >Please choose a Pokemon</Typography> :
-            <Container>
+            <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center">
 
               <Typography variant="h3" display="flex" justifyContent="center"
                 alignItems="center"
@@ -134,30 +131,27 @@ function App() {
                     {pokemonSpec.description}
                   </Typography>
                 </Box>
-
-                {/* </Box> */}
               </Box>
-              <Card variant='outlined'>
 
+              <Card variant='outlined' sx={{ p: 3 }}>
                 <Typography variant="h5" display="flex" justifyContent="center">Profile</Typography>
-                <Typography variant="body1" color="">
-                  <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
-                  {/* {pokemon.abilities.map((ability) => (
-                      <Typography>
-                      {ability}
-                      </Typography>
-                    ))} */}
-                  {pokemon.abilities.join(", ")}
-                </Typography>
-                <Typography variant="body1" color="">
-                  <Typography sx={{ fontWeight: 'bold' }}>Catch Rate:</Typography>
-                  {pokemonSpec.catchRate}%
+                <Typography display = "flex" flexDirection="row">
+
+                  <Typography display="flex" flexDirection="column">
+                    <Typography variant="body1" color="">
+                      <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
+                      {pokemon.abilities.join(", ")}
+                    </Typography>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 'bold' }}>Catch Rate:</Typography>
+                      {pokemonSpec.catchRate}%
+                    </Typography>
+                  </Typography>
                 </Typography>
               </Card>
-            </Container>
+            </Box>
           }
         </Container>
-
       </div>
     </ThemeProvider >
   );
