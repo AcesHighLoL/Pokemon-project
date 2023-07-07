@@ -4,10 +4,10 @@ import TextField from '@mui/material/TextField';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { Container, spacing } from '@mui/system';
+import { Container} from '@mui/system';
 import Typography from '@mui/material/Typography';
 import Axios from "axios"
-import { Box, Card, Chip, Grid, ImageList } from '@mui/material';
+import { Box, Card, Chip} from '@mui/material';
 
 const darkTheme = createTheme({
   palette: {
@@ -136,7 +136,6 @@ function App() {
               <Card variant='outlined' sx={{ p: 3 }}>
                 <Typography variant="h5" display="flex" justifyContent="center">Profile</Typography>
                 <Typography display = "flex" flexDirection="row">
-
                   <Typography display="flex" flexDirection="column">
                     <Typography variant="body1" color="">
                       <Typography sx={{ fontWeight: 'bold' }}>Abilities:</Typography>
